@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # WAL theme previewer and setter by Adam Hallgat
-# https://github.com/hallgat89/WAL-theme-reviewer-for-Nitrogen
+# https://github.com/hallgat89/WAL-theme-previewer-for-Nitrogen
 # download the WAL sript from here: https://github.com/dylanaraps/wal
 
 # adjust the script
