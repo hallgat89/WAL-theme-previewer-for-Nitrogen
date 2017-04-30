@@ -9,24 +9,24 @@
 trap "killall nitrogen" SIGINT SIGTERM
 
 # the location of the WAL script
-WAL="~/.scripts/wal -n -i"
+WAL="~/.scripts/wal.sh -n -i"
 
 nitrogen --sort=alpha &
 
 # use image from nitrogen
-IMG="cat $HOME/.config/nitrogen/bg-saved.cfg | grep file | cut -d= -f2"
-NITIMG=$(eval $IMG)
+IMG="cat $HOME/.config/nitrogen/bg-saved.cfg | grep file | cut -d'=' -f2"
+NITIMG=$(eval "$IMG")
 
 RUNS=`ps -A | grep nitrogen | wc -l`
 
 while [ "$RUNS" -gt "0" ]
 do
     RUNS=`ps -A | grep nitrogen | wc -l`
-    POLL=$(eval $IMG)
+    POLL=$(eval "$IMG")
     if [ "$POLL" != "$NITIMG" ]
     then
         NITIMG=$POLL
-        $(eval $WAL "$NITIMG")
+        $(eval $WAL "\"$NITIMG\"")
         RUNS=`ps -A | grep nitrogen | wc -l`
         echo -e "\033[0mNC (No color)"
         echo -e "\033[1;37mWHITE\t\033[0;30mBLACK"
