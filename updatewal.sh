@@ -4,8 +4,6 @@
 # https://github.com/hallgat89/WAL-theme-previewer-for-Nitrogen
 # download the WAL sript from here: https://github.com/dylanaraps/wal
 
-# adjust the script
-
 trap "killall nitrogen" SIGINT SIGTERM
 
 # the location of the WAL script
