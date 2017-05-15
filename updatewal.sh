@@ -7,22 +7,27 @@
 trap "killall nitrogen" SIGINT SIGTERM
 
 # the location of the WAL script
-WAL="~/.scripts/wal.sh -n -i"
+WAL="$HOME/.scripts/wal.sh -n -i"
 
 nitrogen --sort=alpha &
 
 # use image from nitrogen
-IMG="cat $HOME/.config/nitrogen/bg-saved.cfg | grep file | cut -d'=' -f2"
+NITCONF='$HOME/.config/nitrogen/bg-saved.cfg'
+IMG="cat $NITCONF | grep file | cut -d'=' -f2"
 NITIMG=$(eval "$IMG")
 
 RUNS=`ps -A | grep nitrogen | wc -l`
 
+# run while nitrogen runs
 while [ "$RUNS" -gt "0" ]
 do
     RUNS=`ps -A | grep nitrogen | wc -l`
     POLL=$(eval "$IMG")
+    
+    # check if nitrogen config changed
     if [ "$POLL" != "$NITIMG" ]
     then
+        # set and preview new colorscheme
         NITIMG=$POLL
         $(eval $WAL "\"$NITIMG\"")
         RUNS=`ps -A | grep nitrogen | wc -l`
@@ -35,8 +40,17 @@ do
         echo -e "\033[0;35mPURPLE\t\033[1;35mLIGHT_PURPLE"
         echo -e "\033[0;33mYELLOW\t\033[1;33mLIGHT_YELLOW"
         echo -e "\033[1;30mGRAY\t\033[0;37mLIGHT_GRAY"
+    
+    
+        # get the top left pixel color of the image in hexa
+        WALLBG=`convert "$NITIMG" -crop "1x1+100+200" txt:- | grep ^0,0: | cut -d'#' -f2 | cut -d' ' -f1`
+    
+        # replace the bgcolor in nitrogen config (4th line)
+        sed -i "4s/.*/bgcolor=#$WALLBG/" .config/nitrogen/bg-saved.cfg 
+    
+        # apply bgcolor in nitrogen
+        nitrogen --restore 
     fi
+     
     sleep 1
 done
-
-nitrogen --restore
