@@ -29,7 +29,7 @@ do
     then
         # set and preview new colorscheme
         NITIMG=$POLL
-        $(eval $WAL "\"$NITIMG\"")
+        $(eval $WAL "\"$NITIMG\"" -t)
         RUNS=`ps -A | grep nitrogen | wc -l`
         echo -e "\033[0mNC (No color)"
         echo -e "\033[1;37mWHITE\t\033[0;30mBLACK"
