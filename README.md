@@ -1,4 +1,8 @@
 # WAL-theme-previewer-for-Nitrogen
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/A8ZsLljAFqk/0.jpg)]<br />
+(https://www.youtube.com/watch?v=A8ZsLljAFqk)
+
 A simple script which launches Nitrogen, and generates the WAL theme when you click apply.<br />
 If you launch this script from your terminal, you will be able to preview the terminal theme as well.
 
