@@ -6,6 +6,46 @@
 
 trap "killall nitrogen" SIGINT SIGTERM
 
+color () {
+    # echo ""
+    #black
+    echo -e "\e[0;30m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 01 0;30m"
+    #red
+    echo -e "\e[0;31m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 02 0;31m"
+    #green
+    echo -e "\e[0;32m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 03 0;32m"
+    #yellow
+    echo -e "\e[0;33m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 04 0;33m"
+    #blue
+    echo -e "\e[0;34m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 05 0;34m"
+    #purple
+    echo -e "\e[0;35m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 06 0;35m"
+    #cyan
+    echo -e "\e[0;36m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 07 0;36m"
+    #white
+    echo -e "\e[0;37m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 08 0;37m"
+    echo ""
+    #black
+    echo -e "\e[1;30m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 09 1;30m"
+    #red
+    echo -e "\e[1;31m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 10 1;31m"
+    #green
+    echo -e "\e[1;32m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 11 1;32m"
+    #yellow
+    echo -e "\e[1;33m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 12 1;33m"
+    #blue
+    echo -e "\e[1;34m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 13 1;34m"
+    #purple
+    echo -e "\e[1;35m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 14 1;35m"
+    #cyan
+    echo -e "\e[1;36m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 15 1;36m"
+    #white
+    echo -e "\e[1;37m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 16 1;37m"
+    echo ""
+    echo -e "\e[0;30m█████\\e[0m\e[0;31m█████\\e[0m\e[0;32m█████\\e[0m\e[0;33m█████\\e[0m\e[0;34m█████\\e[0m\e[0;35m█████\\e[0m\e[0;36m█████\\e[0m\e[0;37m█████\\e[0m"
+    echo -e "\e[0m\e[1;30m█████\\e[0m\e[1;31m█████\\e[0m\e[1;32m█████\\e[0m\e[1;33m█████\\e[0m\e[1;34m█████\\e[0m\e[1;35m█████\\e[0m\e[1;36m█████\\e[0m\e[1;37m█████\\e[0m"
+}
+
 # the location of the WAL script
 WAL="$HOME/.scripts/wal.sh -n -i"
 
@@ -31,19 +71,11 @@ do
         NITIMG=$POLL
         $(eval $WAL "\"$NITIMG\"" -t)
         RUNS=`ps -A | grep nitrogen | wc -l`
-        echo -e "\033[0mNC (No color)"
-        echo -e "\033[1;37mWHITE\t\033[0;30mBLACK"
-        echo -e "\033[0;34mBLUE\t\033[1;34mLIGHT_BLUE"
-        echo -e "\033[0;32mGREEN\t\033[1;32mLIGHT_GREEN"
-        echo -e "\033[0;36mCYAN\t\033[1;36mLIGHT_CYAN"
-        echo -e "\033[0;31mRED\t\033[1;31mLIGHT_RED"
-        echo -e "\033[0;35mPURPLE\t\033[1;35mLIGHT_PURPLE"
-        echo -e "\033[0;33mYELLOW\t\033[1;33mLIGHT_YELLOW"
-        echo -e "\033[1;30mGRAY\t\033[0;37mLIGHT_GRAY"
-    
-    
+        
         # info about the top left pixel
         convert "$NITIMG" -crop "1x1+100+200" txt:-
+        
+        color
     
         # get the top left pixel color of the image in hexa
         WALLBG=`convert "$NITIMG" -set colorspace sRGB -crop "1x1+100+200" txt:- | grep ^0,0: | cut -d'#' -f2 | cut -d' ' -f1`
