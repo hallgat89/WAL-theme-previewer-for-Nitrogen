@@ -78,7 +78,7 @@ do
         color
     
         # get the top left pixel color of the image in hexa
-        WALLBG=`convert "$NITIMG" -crop "1x1+100+200" txt:- | grep ^0,0: | cut -d'#' -f2 | cut -d' ' -f1`
+        WALLBG=`convert "$NITIMG" -crop "1x1+0+0" txt:- | grep ^0,0: | cut -d'#' -f2 | cut -d' ' -f1`
     
         # replace the bgcolor in nitrogen config (4th line)
         sed -i "4s/.*/bgcolor=#${WALLBG:0:6}/" .config/nitrogen/bg-saved.cfg 
