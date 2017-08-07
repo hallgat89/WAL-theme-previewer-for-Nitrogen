@@ -82,6 +82,9 @@ do
     
         # replace the bgcolor in nitrogen config (4th line)
         sed -i "4s/.*/bgcolor=#${WALLBG:0:6}/" .config/nitrogen/bg-saved.cfg 
+            
+        # set gsettings
+        gsettings set org.gnome.desktop.background picture-uri 'file://'"$NITIMG" 
     
         # apply bgcolor in nitrogen
         nitrogen --restore 
