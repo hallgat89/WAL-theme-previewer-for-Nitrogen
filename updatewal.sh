@@ -53,7 +53,7 @@ nitrogen --sort=alpha &
 
 # use image from nitrogen
 NITCONF='$HOME/.config/nitrogen/bg-saved.cfg'
-IMG="cat $NITCONF | grep file | cut -d'=' -f2"
+IMG="cat $NITCONF | grep "file" | cut -d'=' -f2 | tail -1"
 NITIMG=$(eval "$IMG")
 
 RUNS=`ps -A | grep nitrogen | wc -l`
@@ -82,7 +82,7 @@ do
     
         # replace the bgcolor in nitrogen config (4th line)
         sed -i "4s/.*/bgcolor=#${WALLBG:0:6}/" .config/nitrogen/bg-saved.cfg 
-            
+    
         # set gsettings
         gsettings set org.gnome.desktop.background picture-uri 'file://'"$NITIMG" 
     
