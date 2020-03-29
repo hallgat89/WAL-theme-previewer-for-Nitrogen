@@ -12,3 +12,6 @@ Features: <br />
 
 WAL script is not included, head for this repo to download it (you only need the wal file):
 https://github.com/dylanaraps/wal
+
+Now contains script for PYWAL:
+https://github.com/dylanaraps/pywal
