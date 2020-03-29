@@ -10,8 +10,8 @@ Features: <br />
 -Lets you use small, centered wallpapers <br />
 -Generates a background color for Nitrogen which matches the image (useful for images smaller than the screen) <br />
 
-WAL script is not included, head for this repo to download it (you only need the wal file):
+WAL script is not included, head for this repo to download it (you only need the wal file):<br />
 https://github.com/dylanaraps/wal
 
-Now contains script for PYWAL:
+Now contains script for PYWAL:<br />
 https://github.com/dylanaraps/pywal
