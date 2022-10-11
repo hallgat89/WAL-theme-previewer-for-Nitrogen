@@ -11,7 +11,7 @@ Features: <br />
 -Generates a background color for Nitrogen which matches the image (useful for images smaller than the screen) <br />
 
 WAL script is not included, head for this repo to download it (you only need the wal file):<br />
-https://github.com/dylanaraps/wal
+https://github.com/dylanaraps/wal (deprecated, use pywal if possible)
 
 Now contains script for PYWAL:<br />
 https://github.com/dylanaraps/pywal
