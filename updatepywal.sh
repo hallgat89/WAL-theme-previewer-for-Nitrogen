@@ -2,12 +2,11 @@
 
 # WAL theme previewer and setter by Adam Hallgat
 # https://github.com/hallgat89/WAL-theme-previewer-for-Nitrogen
-# download the WAL sript from here: https://github.com/dylanaraps/wal
+# download the pywal sript from here: https://github.com/dylanaraps/pywal
 
 trap "killall nitrogen" SIGINT SIGTERM
 
 color () {
-    # echo ""
     #black
     echo -e "\e[0;30m ███ *** AaBbCs ---  ███ \\e[0m   ---> Color 01 0;30m"
     #red
@@ -46,49 +45,59 @@ color () {
     echo -e "\e[0m\e[1;30m█████\\e[0m\e[1;31m█████\\e[0m\e[1;32m█████\\e[0m\e[1;33m█████\\e[0m\e[1;34m█████\\e[0m\e[1;35m█████\\e[0m\e[1;36m█████\\e[0m\e[1;37m█████\\e[0m"
 }
 
+# launch nitrogen
+nitrogen --sort=alpha &
 # the location of the WAL script
 WAL="wal -n -i"
-
-nitrogen --sort=alpha &
-
 # use image from nitrogen
-NITCONF='$HOME/.config/nitrogen/bg-saved.cfg'
-IMG="cat $NITCONF | grep "file" | cut -d'=' -f2 | tail -1"
-NITIMG=$(eval "$IMG")
-
+NITCONF="$HOME/.config/nitrogen/bg-saved.cfg"
 RUNS=`ps -A | grep nitrogen | wc -l`
+LASTMOD=$(eval "stat -c %Y $NITCONF")
+MODTIME=$(eval "stat -c %Y $NITCONF")
 
 # run while nitrogen runs
 while [ "$RUNS" -gt "0" ]
 do
-    RUNS=`ps -A | grep nitrogen | wc -l`
-    POLL=$(eval "$IMG")
+    # poll config changes
+    MODTIME=$(eval "stat -c %Y $NITCONF")
     
-    # check if nitrogen config changed
-    if [ "$POLL" != "$NITIMG" ]
+    # check if nitrogen config changed 
+    if [ "$MODTIME" != "$LASTMOD" ] 
     then
-        # set and preview new colorscheme
-        NITIMG=$POLL
-        $(eval $WAL "\"$NITIMG\"" -t)
-        RUNS=`ps -A | grep nitrogen | wc -l`
+        # count number of settings in config
+        MONITORS=`cat .config/nitrogen/bg-saved.cfg | grep 'file' | wc -l`
+    
+        # cycle through monitors
+        for MONNUM in $(seq 1 $MONITORS)
+        do 
+            # get file belonging to monitor MONNUM
+            NITIMG="$(cat "$NITCONF" | grep "file" | cut -d'=' -f2 | head -n "$MONNUM" | tail -n 1)"
+
+            # get the top left pixel color of the image in hexa
+            WALLBG=`convert "$NITIMG" -crop "1x1+0+0" txt:- | grep ^0,0: | cut -d'#' -f2 | cut -d' ' -f1`
+
+            # fetch the line number for current monitor containing the bg color
+            LINENUM=`cat $NITCONF | grep -n "mode" | awk -F: '{print $1}' | head -n $MONNUM | tail -n 1`
+            ((LINENUM++)) # fix indexing
+            
+            # replace the bgcolor in nitrogen config
+            sed -i "${LINENUM}s/.*/bgcolor=#${WALLBG:0:6}/" $NITCONF
+        done
         
-        # info about the top left pixel
-        convert "$NITIMG" -crop "1x1+100+200" txt:-
-        
-        color
-    
-        # get the top left pixel color of the image in hexa
-        WALLBG=`convert "$NITIMG" -crop "1x1+0+0" txt:- | grep ^0,0: | cut -d'#' -f2 | cut -d' ' -f1`
-    
-        # replace the bgcolor in nitrogen config (4th line)
-        sed -i "4s/.*/bgcolor=#${WALLBG:0:6}/" .config/nitrogen/bg-saved.cfg 
-    
-        # set gsettings
-        gsettings set org.gnome.desktop.background picture-uri 'file://'"$NITIMG" 
-    
-        # apply bgcolor in nitrogen
+        # update modification time
+        LASTMOD=$(eval "stat -c %Y $NITCONF")
+
+        # get first image for schema generation
+        NITIMG="$(cat "$NITCONF" | grep "file" | cut -d'=' -f2 | head -n 1 | tail -n 1)"
+
+        # set wal color
+        $WAL $NITIMG -t
+
+        # apply bgcolor changes in nitrogen
         nitrogen --restore 
+
+        color
     fi
-     
+    RUNS=`ps -A | grep nitrogen | wc -l`
     sleep 1
 done

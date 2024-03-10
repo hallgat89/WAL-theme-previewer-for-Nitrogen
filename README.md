@@ -9,9 +9,7 @@ Features: <br />
 -Lets you preview your WAL theme<br />
 -Lets you use small, centered wallpapers <br />
 -Generates a background color for Nitrogen which matches the image (useful for images smaller than the screen) <br />
+-Now with multi-monitor support <br />
 
-WAL script is not included, head for this repo to download it (you only need the wal file):<br />
-https://github.com/dylanaraps/wal (deprecated, use pywal if possible)
-
-Now contains script for PYWAL:<br />
+Get PYWAL:<br />
 https://github.com/dylanaraps/pywal
